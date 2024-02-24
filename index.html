@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissor Game </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="https://wallpapercave.com/wp/wp8121945.jpg">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Rock, Paper, Scissor Game <button class="cm" style="border-radius: 50%; "><i
+                class="fa-regular fa-sun"></i></button></h1><br>
+
+    <p class="Attempts">Attempts Left : <b class="att-left">5</b></p>
+
+    <button id="rock" class="game">
+        <div>✊</div>
+    </button>
+    <button id="scissors" class="game">
+        <div>✌</div>
+    </button>
+    <button id="paper" class="game">
+        <div>🖐</div>
+    </button>
+
+
+
+    <div class="s">
+        <div class="score">
+            <p class="user-score">0</p><br>
+            <p class="user"><b><i class="fa-solid fa-user"></i></b></p>
+            <p><b>You</b></p><br>
+        </div>
+        <div class="cscore">
+            <p class="comp-score">0</p><br>
+            <p class="Comp"><b><i class="fa-solid fa-robot"></b></i></p>
+            <p><b>Comp</b></p><br>
+        </div>
+    </div>
+
+    <div class="msg">
+        <p class="mssg"><b>Play your Move</b></p>
+    </div>
+
+    <script>
+
+
+        let cm = document.querySelector(".cm");
+        let body = document.querySelector("body");
+
+        let currentmode = "light";
+        cm.addEventListener("click", () => {
+            if (currentmode === "light") {
+                currentmode = "dark";
+                body.style.backgroundColor = " black";
+                body.style.color = "white";
+                cm.innerHTML = '<i class="fa-regular fa-sun"></i>';
+            }
+            else {
+                currentmode = "light";
+                body.style.backgroundColor = "white";
+                body.style.color = "black";
+
+                cm.innerHTML = '<i class="fa-regular fa-moon"></i>';
+            }
+        });
+
+
+
+        let attempt = 5;
+        let att = document.querySelector(".att-left");
+        let uscore = 0;
+        let cscore = 0;
+        let user = document.querySelector(".user-score");
+        let comps = document.querySelector(".comp-score");
+        let msg = document.querySelector('.mssg');
+
+
+        const Draw = () => {
+            console.log("its draw");
+            msg.innerHTML = "<i>Its Draw ! Play Again</i>";
+            msg.style.backgroundColor = "rgb(4, 11, 80)";
+            attempt = attempt - 1;
+            att.innerHTML = attempt;
+            gameOver();
+        }
+
+        const genComp = () => {
+            let option = ["rock", "paper", "scissors"];
+            let comchoose = Math.floor(Math.random() * 3);
+            // console.log(comchoose);
+            return option[comchoose];
+        }
+
+        const playGame = (userchoose) => {
+            console.log("You Chooeses : ", userchoose);
+            let comp = genComp();
+            console.log("Comp Chooeses : ", comp);
+
+            if (userchoose === comp) {
+                Draw();
+            }
+            else {
+                userwin = true;
+                if (userchoose === "rock") {
+                    userwin = comp === "paper" ? false : true;
+                }
+                else if (userchoose === "paper") {
+                    userwin = comp === "scissors" ? false : true;
+                }
+                else {
+                    userwin = comp === "rock" ? false : true;
+                }
+                Showwin();
+            }
+        }
+
+        const Showwin = () => {
+            if (userwin) {
+                console.log("you win");
+                msg.innerHTML = "<i>Congratulations ! You win</i>";
+                msg.style.backgroundColor = "green";
+                uscore = uscore + 1;
+                user.innerHTML = uscore;
+                attempt = attempt - 1;
+                att.innerHTML = attempt;
+                gameOver();
+            }
+            else {
+                console.log("you loose");
+                msg.innerHTML = "<i>Sorry! You loose</i>";
+                msg.style.backgroundColor = "red";
+                cscore = cscore + 1;
+                comps.innerHTML = cscore;
+                attempt = attempt - 1;
+                att.innerHTML = attempt;
+                gameOver();
+            }
+        }
+
+        let chooses = document.querySelectorAll(".game");
+        chooses.forEach((choose) => {
+
+            choose.addEventListener("click", () => {
+                let userchoose = choose.id;
+                playGame(userchoose);
+
+            })
+        })
+
+        const gameOver = () => {
+            if (attempt === 0) {
+                if (uscore === cscore) {
+                    setTimeout(() => {
+                        alert("Well Played ! Its Draw");
+                    }, 900)
+                }
+                else if (uscore > cscore) {
+
+                    setTimeout(() => {
+                        alert("Congartulation! You Win ");
+                    }, 900)
+                }
+                else {
+
+                    setTimeout(() => {
+                        alert("You Loose")
+                    }, 900)
+                }
+                setTimeout(() => {
+                    location.reload();
+                }, 2000)
+            }
+        }
+    </script>
+</body>
